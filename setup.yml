@@ -53,6 +53,7 @@
     block:
       - apt:
           update_cache: yes
+      - apt:
           name:
             - git
             - gnome-tweak-tool
