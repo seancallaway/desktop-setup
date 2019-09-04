@@ -1,1 +1,1 @@
-localhost ansible_connection=local primary_user=sean
+localhost ansible_connection=local primary_user=root
