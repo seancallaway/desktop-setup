@@ -51,11 +51,11 @@
   
   - name: Install needed packages (apt)
     block:
-      - apt:
-          name: '*'
+      - name: Update apt cache
+        apt:
           update_cache: yes
-          state: latest
-      - apt:
+      - name: Install packages
+        apt:
           name:
             - git
             - gnome-tweak-tool
