@@ -4,12 +4,8 @@ python: "3.7"
 dist: disco
 sudo: required
 
-before_install:
-  - sudo apt update -qq
-  - sudo apt install -qq python3-pip
-
 install:
-  - sudo pip3 install ansible==2.8.4
+  - sudo pip install ansible
 
 script:
   - sudo ansible-playbook -i inventory setup.yml
