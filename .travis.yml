@@ -4,6 +4,10 @@ python: "3.7"
 dist: disco
 sudo: required
 
+pre-install:
+  - sudo apt update
+  - sudo apt upgrade -y
+
 install:
   - sudo pip install ansible
 
