@@ -52,7 +52,9 @@
   - name: Install needed packages (apt)
     block:
       - apt:
+          name: '*'
           update_cache: yes
+          state: latest
       - apt:
           name:
             - git
