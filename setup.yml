@@ -45,6 +45,47 @@
           state: present
     when: ansible_distribution == 'Ubuntu'
 
+  - name: Install needed repositories (yum)
+    vars:
+      fedora_version: 30
+    block:
+      - name: Install RPMFusion Free
+        yum:
+          name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_version }}.noarch.rpm"
+          state: present
+      - name: Install RPMFusion Nonfree
+        yum:
+          name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_version }}.noarch.rpm"
+          state: present
+      - name: Install Google Chrome Repo
+        yum_repository:
+          name: google-chrome
+          description: Google Chrome
+          file: google-chrome
+          baseurl: http://dl.google.com/linux/chrome/rpm/stable/x86_64
+          gpgkey: https://dl.google.com/linux/linux_signing_key.pub
+          gpgcheck: yes
+          enabled: yes
+      - name: Install Docker CE Repo
+        yum_repository:
+          name: docker-ce
+          description: Docker CE Stable
+          file: docker-ce
+          baseurl: "https://download.docker.com/linux/fedora/{{ fedora_version }}/x86_64/stable"
+          gpgkey: https://download.docker.com/linux/fedora/gpg
+          gpgcheck: yes
+          enabled: yes
+      - name: Add Wine HQ Repo
+        yum_repository:
+          name: WineHQ
+          description: WineHQ packages
+          file: winehq
+          baseurl: "https://dl.winehq.org/wine-builds/fedora/{{ fedora_version }}"
+          gpgkey: https://dl.winehq.org/wine-builds/winehq.key
+          gpgcheck: yes
+          enabled: yes
+    when: ansible_distribution == 'Fedora'
+
   - name: Enable 32-bit Architecture
     command: dpkg --add-architecture i386 
     when: ansible_distribution == 'Ubuntu'
@@ -57,6 +98,9 @@
       - name: Install packages
         apt:
           name:
+            - containerd.io
+            - docker-ce
+            - docker-ce-cli
             - git
             - gnome-tweak-tool
             - libasound2-plugins:i386 
@@ -73,9 +117,12 @@
             - pop-gtk-theme
             - pop-gnome-shell-theme
             - python3-pip
+            - p7zip-full
+            - p7zip-rar
             - seafile-gui
             - steam-installer
             - ubuntu-restricted-extras
+            - vlc
             - winehq-stable
             - xz-utils
           state: present
@@ -88,6 +135,42 @@
           deb: https://dl.discordapp.net/apps/linux/0.0.9/discord-0.0.9.deb
           state: present
     when: ansible_distribution == 'Ubuntu'
+
+  - name: Install needed packages (yum)
+    block:
+      - name: Install packages
+        yum:
+          name:
+            - containerd.io
+            - Discord
+            - docker-ce
+            - docker-ce-cli
+            - git
+            - gnome-tweak-tool
+            - gnutls
+            - gnutls-devel
+            - google-chrome-stable
+            - libgpg-error
+            - lutris
+            - openldap
+            - openldap-devel
+            - python3-pip
+            - p7zip
+            - seafile-client
+            - snapd
+            - sqlite2.i686
+            - sqlite2.x86_64
+            - steam
+            - unzip
+            - vlc
+            - wine-stable
+          state: present
+      - name: Enable classic snap support
+        file:
+          src: /var/lib/snapd/snap
+          dest: /snap
+          state: link
+    when: ansible_distribution == 'Fedora'
 
   - name: Remove unneeded software (apt)
     apt:
