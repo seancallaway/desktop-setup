@@ -76,6 +76,7 @@
             - seafile-gui
             - steam-installer
             - ubuntu-restricted-extras
+            - vim
             - winehq-stable
             - xz-utils
           state: present
@@ -95,20 +96,22 @@
         - apport-gtk
       state: absent
     when: ansible_distribution == 'Ubuntu'
-  
+
   - name: Install needed software (snap)
-    snap:
-      name:
-        - pycharm-professional
-        - spotify
-        - telegram-desktop
-      state: present
+    block:
+      - snap:
+          name: pycharm-professional
+          classic: yes
+          state: present
+      - snap:
+          name:
+          - spotify
+          - telegram-desktop
+          state: present
   
   - name: Install needed software (pip)
-    vars:
-      pip3_path: /usr/bin/pip3
     pip:
-      executable: "{{ pip3_path }}"
+      executable: pip3
       name:
         - ffmpeg
         - youtube-dl
