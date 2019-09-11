@@ -110,12 +110,13 @@
           state: present
   
   - name: Install needed software (pip)
-    pip:
-      executable: pip3
-      name:
-        - ffmpeg
-        - youtube-dl
-      state: present
+    command: pip3 install -U youtube-dl ffmpeg
+    # pip:
+    #  executable: pip3
+    #  name:
+    #    - ffmpeg
+    #    - youtube-dl
+    #  state: present
 
   - name: Do Docker Setup
     block:
