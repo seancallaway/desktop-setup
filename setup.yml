@@ -101,6 +101,7 @@
             - containerd.io
             - docker-ce
             - docker-ce-cli
+            - ffmpeg
             - git
             - gnome-tweak-tool
             - libasound2-plugins:i386 
@@ -122,6 +123,7 @@
             - seafile-gui
             - steam-installer
             - ubuntu-restricted-extras
+            - vim
             - vlc
             - winehq-stable
             - xz-utils
@@ -145,6 +147,7 @@
             - Discord
             - docker-ce
             - docker-ce-cli
+            - ffmpeg
             - git
             - gnome-tweak-tool
             - gnutls
@@ -178,24 +181,27 @@
         - apport-gtk
       state: absent
     when: ansible_distribution == 'Ubuntu'
-  
+
   - name: Install needed software (snap)
-    snap:
-      name:
-        - pycharm-professional
-        - spotify
-        - telegram-desktop
-      state: present
+    block:
+      - snap:
+          name: pycharm-professional
+          classic: yes
+          state: present
+      - snap:
+          name:
+          - spotify
+          - telegram-desktop
+          state: present
   
   - name: Install needed software (pip)
-    vars:
-      pip3_path: /usr/bin/pip3
-    pip:
-      executable: "{{ pip3_path }}"
-      name:
-        - ffmpeg
-        - youtube-dl
-      state: present
+    command: pip3 install -U youtube-dl ffmpeg
+    # pip:
+    #  executable: pip3
+    #  name:
+    #    - ffmpeg
+    #    - youtube-dl
+    #  state: present
 
   - name: Do Docker Setup
     block:
