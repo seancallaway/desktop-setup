@@ -185,7 +185,9 @@
   - name: Install needed software (snap)
     block:
       - snap:
-          name: pycharm-professional
+          name: 
+          - pycharm-professional
+          - code
           classic: yes
           state: present
       - snap:
