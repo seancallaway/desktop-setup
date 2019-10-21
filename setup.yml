@@ -47,7 +47,7 @@
 
   - name: Install needed repositories (yum)
     vars:
-      fedora_version: 30
+      fedora_version: "{{ lookup('pipe', '. /etc/os-release && echo $VERSION_ID') }}"
     block:
       - name: Install RPMFusion Free
         yum:
