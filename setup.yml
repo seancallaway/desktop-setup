@@ -5,7 +5,7 @@
 
   - name: Install needed repositories (apt)
     vars:
-      ubuntu_codename: disco
+      ubuntu_codename: "{{ lookup('pipe', 'lsb_release -cs') }}"
     block:
       - name: Add System76 Pop PPA
         apt_repository:
