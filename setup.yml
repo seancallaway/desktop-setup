@@ -118,6 +118,7 @@
             - pop-gtk-theme
             - pop-gnome-shell-theme
             - python3-pip
+            - python3-setuptools
             - p7zip-full
             - p7zip-rar
             - seafile-gui
@@ -158,6 +159,7 @@
             - openldap
             - openldap-devel
             - python3-pip
+            - python3-setuptools
             - p7zip
             - seafile-client
             - snapd
@@ -197,13 +199,12 @@
           state: present
   
   - name: Install needed software (pip)
-    command: pip3 install -U youtube-dl ffmpeg
-    # pip:
-    #  executable: pip3
-    #  name:
-    #    - ffmpeg
-    #    - youtube-dl
-    #  state: present
+    pip:
+      executable: pip3
+      name:
+        - ffmpeg
+        - youtube-dl
+      state: present
 
   - name: Do Docker Setup
     block:
